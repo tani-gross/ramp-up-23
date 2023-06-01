@@ -1,22 +1,22 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
 import random
 
-class Book():
-    def __init__(self, id, title, author, year):
-        self.id = id
-        self.title = title
-        self.author = author
-        self.year = year
+class Book(BaseModel):
+    id:int = None
+    title:str
+    author:str
+    year:int
 
 books = []
 
 app = FastAPI()
 
 @app.post("/books/")
-async def create_book(title: str, author: str, year: int):
-    created_book = Book(random.randrange(10000), title, author, year)
-    books.append(created_book)
-    return {"Book Created": created_book}
+async def create_book(book: Book):
+    book.id = random.randrange(10000)
+    books.append(book)
+    return {"Book Created": book}
 
 @app.get("/books/")
 async def get_books():
