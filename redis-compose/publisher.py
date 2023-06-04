@@ -9,7 +9,7 @@ async def root():
 
 @app.post("/publish")
 async def publish_message(message:str):
-    redis = await aioredis.Redis.from_url("redis://localhost")
+    redis = await aioredis.Redis.from_url("redis://redis")
     await redis.publish("channel", message)
     redis.close()
     return {"message": "Published Successfully"}
